@@ -54,6 +54,16 @@ class BinarySearchTree extends Tree {
   includes(value) {
     return this._find(value).value === value;
   }
+
+  insert(value) {
+    let parent = this._find(value);
+    // do nothing if the value already exists in the tree
+    if (value < parent.value) {
+      parent.left = new BinarySearchTree(value);
+    } else if (value > parent.value) {
+      parent.right = new BinarySearchTree(value);
+    }
+  }
 }
 
 
