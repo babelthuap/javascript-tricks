@@ -6,6 +6,23 @@ class List {
     this.next = next;
   }
 
+  removeDuplicates(previous, allValues) {
+    if (!allValues) {
+      allValues = new Set();
+    }
+
+    if (allValues.has(this.value)) {
+      previous.next = this.next;
+    } else {
+      allValues.add(this.value);
+      previous = this;
+    }
+
+    if (this.next) {
+      this.next.removeDuplicates(previous, allValues);
+    }
+  }
+
   static fromArray(arr) {
     let tail;
     for (let i = arr.length - 1; i >= 0; --i) {
@@ -28,5 +45,6 @@ class List {
 }
 
 // TEST
-let list = List.fromArray([1,2,3,4,5]);
-console.log(list.toArray());
+let list = List.fromArray([5,4,4,1,3,5,4,2,4]);
+list.removeDuplicates();
+console.log('removed:', list.toArray()); // -> [5,4,1,3,2]
