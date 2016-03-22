@@ -47,6 +47,21 @@ class List {
     return counter >= n ? leftFinger.value : undefined;
   }
 
+  nthFromLastRec(n, counter, leftFinger) {
+    if (!counter) counter = 0;
+    if (!leftFinger) leftFinger = this;
+
+    if (counter > n) {
+      leftFinger = leftFinger.next;
+    }
+
+    if (!this.next) {
+      return counter >= n ? leftFinger.value : undefined;
+    } else {
+      return this.next.nthFromLastRec(n, counter + 1, leftFinger);
+    }
+  }
+
   sort(comparator) {
     let sorted = List.fromArray(this.toArray().sort(comparator));
     this.value = sorted.value;
@@ -85,3 +100,7 @@ console.log('0th from last:', list.nthFromLast(0));
 console.log('2th from last:', list.nthFromLast(2));
 console.log('4th from last:', list.nthFromLast(4));
 console.log('5th from last:', list.nthFromLast(5));
+console.log('0th from last (recursive):', list.nthFromLastRec(0));
+console.log('2th from last (recursive):', list.nthFromLastRec(2));
+console.log('4th from last (recursive):', list.nthFromLastRec(4));
+console.log('5th from last (recursive):', list.nthFromLastRec(5));
