@@ -89,18 +89,61 @@ class List {
   }
 }
 
+
+// add two numbers whose digits are given in reverse order by 2 lists
+// e.g. (3 -> 1 -> 4) + (5 -> 9 -> 2)
+// returns (8 -> 0 -> 7)
+function add(listA, listB) {
+  let sum = new List(0);
+  let current = sum;
+
+  while (listA || listB) {
+    current.value = current.value + (listA ? listA.value : 0)
+                                  + (listB ? listB.value : 0);
+    let carry = Math.floor(current.value / 10);
+    current.value %= 10;
+
+    listA = listA && listA.next;
+    listB = listB && listB.next;
+
+    if (listA || listB || carry) {
+      current.next = new List(carry);
+      current = current.next;
+    }
+  }
+
+  return sum;
+}
+
+
 // TEST
 let list = List.fromArray([5,4,4,1,3,5,4,2,4]);
+
+console.log('original:', list.toArray());
 list.removeDuplicates()
 console.log('no duplicates:', list.toArray()); // -> [5,4,1,3,2]
-console.log('0th:', list.nth(0));
+
+console.log('\n0th:', list.nth(0));
 console.log('4th:', list.nth(4));
 console.log('5th:', list.nth(5));
-console.log('0th from last:', list.nthFromLast(0));
+
+console.log('\n0th from last:', list.nthFromLast(0));
 console.log('2th from last:', list.nthFromLast(2));
 console.log('4th from last:', list.nthFromLast(4));
 console.log('5th from last:', list.nthFromLast(5));
-console.log('0th from last (recursive):', list.nthFromLastRec(0));
+
+console.log('\n0th from last (recursive):', list.nthFromLastRec(0));
 console.log('2th from last (recursive):', list.nthFromLastRec(2));
 console.log('4th from last (recursive):', list.nthFromLastRec(4));
 console.log('5th from last (recursive):', list.nthFromLastRec(5));
+
+console.log('\nsums:');
+let A = List.fromArray([3, 1, 4]);
+let B = List.fromArray([5, 9, 2, 7]);
+console.log(add(A, B).toArray()); // -> [8, 0, 7, 7]
+let C = List.fromArray([7, 9]);
+let D = List.fromArray([5]);
+console.log(add(C, D).toArray()); // -> [2, 0, 1]
+let E = List.fromArray([9, 9, 9, 9]);
+let F = List.fromArray([9, 9, 9, 9]);
+console.log(add(E, F).toArray()); // -> [8, 9, 9, 9, 1]
