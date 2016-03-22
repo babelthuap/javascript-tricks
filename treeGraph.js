@@ -7,6 +7,7 @@ const EMPTY_TREE = {
   _find: () => false,
   height: () => 0,
   isEmpty: true,
+  postOrder: () => [],
   print: () => undefined,
 };
 
@@ -26,7 +27,7 @@ class Tree {
   }
 
   inOrder() {
-    
+
   }
 
   preOrder() {
@@ -45,7 +46,7 @@ class Tree {
   }
 
   postOrder() {
-
+    return this.left.postOrder().concat(this.right.postOrder()).concat(this.value);
   }
 
   print(prefix) {
@@ -110,6 +111,8 @@ tree.insert(2.5);
 tree.print();
 
 console.log('\nin order:', tree.inOrder());
+console.log('pre order:', tree.preOrder());
+console.log('post order:', tree.postOrder());
 
 
 console.log('\nincludes(3):', tree.includes(3));
