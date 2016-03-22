@@ -23,6 +23,28 @@ class Stack {
 }
 
 
+class MinStack extends Stack {
+  constructor() {
+    super();
+  }
+
+  push(value) {
+    let min = (this.top && this.top.min < value) ? this.top.min : value;
+    this.top = {
+      value: value,
+      next: this.top,
+      min: min,
+    };
+  }
+
+  min() {
+    if (this.top) {
+      return this.top.min;
+    }
+  }
+}
+
+
 class Queue {
   constructor() {
     this.in = null;
@@ -61,10 +83,30 @@ let stack = new Stack();
 stack.push(1);
 stack.push(2);
 stack.push(3);
-console.log(stack.pop());
-console.log(stack.pop());
-console.log(stack.pop());
-console.log(stack.pop());
+console.log('pop:', stack.pop());
+console.log('pop:', stack.pop());
+console.log('pop:', stack.pop());
+console.log('pop:', stack.pop());
+
+console.log();
+
+let minStack = new MinStack();
+minStack.push(3);
+minStack.push(4);
+minStack.push(2);
+minStack.push(5);
+minStack.push(1);
+console.log('min:', minStack.min());
+console.log('pop:', minStack.pop());
+console.log('min:', minStack.min());
+console.log('pop:', minStack.pop());
+console.log('min:', minStack.min());
+console.log('pop:', minStack.pop());
+console.log('min:', minStack.min());
+console.log('pop:', minStack.pop());
+console.log('min:', minStack.min());
+
+console.log();
 
 let queue = new Queue();
 queue.enqueue(1);
