@@ -1,5 +1,8 @@
 'use strict';
 
+const Stack = require('./stackQueue').Stack
+    , Queue = require('./stackQueue').Queue;
+
 const EMPTY_TREE = {
   _find: () => false,
   height: () => 0,
@@ -23,11 +26,22 @@ class Tree {
   }
 
   inOrder() {
-
+    
   }
 
   preOrder() {
+    let arr = [];
+    let todo = new Stack();
+    todo.push(this);
 
+    let node;
+    while (node = todo.pop()) {
+      arr.push(node.value);
+      !node.right.isEmpty && todo.push(node.right);
+      !node.left.isEmpty  && todo.push(node.left);
+    }
+
+    return arr;
   }
 
   postOrder() {
@@ -83,35 +97,27 @@ class BinarySearchTree extends Tree {
 
 // TEST
 
-let tree = new Tree(4);
-    tree.left = new Tree(2);
-    tree.left.left = new Tree(1);
-    tree.left.left.left = new Tree(0);
-    tree.left.left.right = new Tree(1.5);
-    tree.left.right = new Tree(3);
-    tree.right = new Tree(6);
-    tree.right.left = new Tree(5);
-    tree.right.right = new Tree(7);
+let tree = new BinarySearchTree(4);
+tree.insert(2);
+tree.insert(6);
+tree.insert(1);
+tree.insert(7);
+tree.insert(3);
+tree.insert(5);
+tree.insert(3.5);
+tree.insert(2.5);
+
 tree.print();
 
-console.log();
-console.log(tree.height());
-console.log(tree.isBalanced());
+console.log('\nin order:', tree.inOrder());
 
-console.log();
 
-let searchTree = new BinarySearchTree(4);
-searchTree.insert(2);
-searchTree.insert(6);
-searchTree.insert(1);
-searchTree.insert(7);
-searchTree.insert(3);
-searchTree.insert(5);
-searchTree.insert(3.5);
-searchTree.insert(2.5);
+console.log('\nincludes(3):', tree.includes(3));
+console.log('includes(20):', tree.includes(20));
+console.log('height():', tree.height());
+console.log('isBalanced():', tree.isBalanced());
 
-searchTree.print();
 
-console.log();
-console.log(searchTree.includes(3));
-console.log(searchTree.includes(20));
+
+
+

@@ -77,6 +77,12 @@ class Queue {
 }
 
 
+module.exports = {
+  Stack: Stack,
+  Queue: Queue,
+};
+
+
 // TEST
 
 let stack = new Stack();
