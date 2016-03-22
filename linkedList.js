@@ -31,6 +31,22 @@ class List {
     }
   }
 
+  nthFromLast(n) {
+    let leftFinger = this;
+    let rightFinger = this;
+    let counter = 0;
+
+    while (rightFinger.next) {
+      rightFinger = rightFinger.next;
+      ++counter;
+      if (counter > n) {
+        leftFinger = leftFinger.next;
+      }
+    }
+
+    return counter >= n ? leftFinger.value : undefined;
+  }
+
   sort(comparator) {
     let sorted = List.fromArray(this.toArray().sort(comparator));
     this.value = sorted.value;
@@ -65,3 +81,7 @@ console.log('no duplicates:', list.toArray()); // -> [5,4,1,3,2]
 console.log('0th:', list.nth(0));
 console.log('4th:', list.nth(4));
 console.log('5th:', list.nth(5));
+console.log('0th from last:', list.nthFromLast(0));
+console.log('2th from last:', list.nthFromLast(2));
+console.log('4th from last:', list.nthFromLast(4));
+console.log('5th from last:', list.nthFromLast(5));
