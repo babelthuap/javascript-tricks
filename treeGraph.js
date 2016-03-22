@@ -1,14 +1,11 @@
 'use strict';
 
-const Stack = require('./stackQueue').Stack
-    , Queue = require('./stackQueue').Queue;
-
 const EMPTY_TREE = {
   _find: () => false,
   height: () => 0,
   isEmpty: true,
-  postOrder: () => [],
   print: () => undefined,
+  traverse: () => [],
 };
 
 class Tree {
@@ -26,27 +23,23 @@ class Tree {
     return Math.abs(this.left.height() - this.right.height()) <= 1;
   }
 
-  inOrder() {
-
-  }
-
-  preOrder() {
-    let arr = [];
-    let todo = new Stack();
-    todo.push(this);
-
-    let node;
-    while (node = todo.pop()) {
-      arr.push(node.value);
-      !node.right.isEmpty && todo.push(node.right);
-      !node.left.isEmpty  && todo.push(node.left);
+  traverse(order) {
+    switch (order) {
+      case 'in':
+        return this.left.traverse('in')
+               .concat(this.value)
+               .concat(this.right.traverse('in'));
+      case 'pre':
+        return [this.value]
+               .concat(this.left.traverse('pre'))
+               .concat(this.right.traverse('pre'));
+      case 'post':
+        return this.left.traverse('post')
+               .concat(this.right.traverse('post'))
+               .concat(this.value);
+      default:
+        throw new Error("'traverse' must have an argument: 'in', 'pre', or 'post'");
     }
-
-    return arr;
-  }
-
-  postOrder() {
-    return this.left.postOrder().concat(this.right.postOrder()).concat(this.value);
   }
 
   print(prefix) {
@@ -110,17 +103,11 @@ tree.insert(2.5);
 
 tree.print();
 
-console.log('\nin order:', tree.inOrder());
-console.log('pre order:', tree.preOrder());
-console.log('post order:', tree.postOrder());
-
+console.log('\nin order:', tree.traverse('in'));
+console.log('pre order:', tree.traverse('pre'));
+console.log('post order:', tree.traverse('post'));
 
 console.log('\nincludes(3):', tree.includes(3));
 console.log('includes(20):', tree.includes(20));
 console.log('height():', tree.height());
 console.log('isBalanced():', tree.isBalanced());
-
-
-
-
-
