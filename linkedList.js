@@ -23,6 +23,14 @@ class List {
     }
   }
 
+  nth(n) {
+    if (n === 0) {
+      return this.value;
+    } else {
+      return this.next ? this.next.nth(n - 1) : undefined;
+    }
+  }
+
   sort(comparator) {
     let sorted = List.fromArray(this.toArray().sort(comparator));
     this.value = sorted.value;
@@ -52,4 +60,8 @@ class List {
 
 // TEST
 let list = List.fromArray([5,4,4,1,3,5,4,2,4]);
-console.log('removed:', list.removeDuplicates()); // -> [5,4,1,3,2]
+list.removeDuplicates()
+console.log('no duplicates:', list.toArray()); // -> [5,4,1,3,2]
+console.log('0th:', list.nth(0));
+console.log('4th:', list.nth(4));
+console.log('5th:', list.nth(5));
