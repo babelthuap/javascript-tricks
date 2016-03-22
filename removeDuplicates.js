@@ -23,6 +23,12 @@ class List {
     }
   }
 
+  sort(comparator) {
+    let sorted = List.fromArray(this.toArray().sort(comparator));
+    this.value = sorted.value;
+    this.next = sorted.next;
+  }
+
   static fromArray(arr) {
     let tail;
     for (let i = arr.length - 1; i >= 0; --i) {
@@ -46,5 +52,4 @@ class List {
 
 // TEST
 let list = List.fromArray([5,4,4,1,3,5,4,2,4]);
-list.removeDuplicates();
-console.log('removed:', list.toArray()); // -> [5,4,1,3,2]
+console.log('removed:', list.removeDuplicates()); // -> [5,4,1,3,2]
