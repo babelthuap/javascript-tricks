@@ -1,8 +1,10 @@
 'use strict';
 
 const EMPTY_TREE = {
-  height: () => 0,
   _find: () => false,
+  height: () => 0,
+  isEmpty: true,
+  print: () => undefined,
 };
 
 class Tree {
@@ -30,6 +32,18 @@ class Tree {
 
   postOrder() {
 
+  }
+
+  print(prefix) {
+    if (!prefix) {
+      console.log(' ' + this.value);
+      prefix = '';
+    } else {
+      console.log(prefix + '`' + this.value);
+    }
+
+    this.right.print(prefix + (this.left.isEmpty ? '  ' : ' |'));
+    this.left.print(prefix + '  ');
   }
 }
 
@@ -69,42 +83,35 @@ class BinarySearchTree extends Tree {
 
 // TEST
 
-let tree = new Tree(2);
-    tree.left = new Tree(1);
-    tree.right = new Tree(3);
+let tree = new Tree(4);
+    tree.left = new Tree(2);
+    tree.left.left = new Tree(1);
+    tree.left.left.left = new Tree(0);
+    tree.left.left.right = new Tree(1.5);
+    tree.left.right = new Tree(3);
+    tree.right = new Tree(6);
+    tree.right.left = new Tree(5);
+    tree.right.right = new Tree(7);
+tree.print();
+
+console.log();
 console.log(tree.height());
 console.log(tree.isBalanced());
 
 console.log();
 
-let searchTree = new BinarySearchTree(2);
-    searchTree.left = new BinarySearchTree(1);
-    searchTree.right = new BinarySearchTree(3);
-console.log(searchTree.includes(1));
+let searchTree = new BinarySearchTree(4);
+searchTree.insert(2);
+searchTree.insert(6);
+searchTree.insert(1);
+searchTree.insert(7);
+searchTree.insert(3);
+searchTree.insert(5);
+searchTree.insert(3.5);
+searchTree.insert(2.5);
+
+searchTree.print();
+
+console.log();
 console.log(searchTree.includes(3));
-console.log(searchTree.includes(0));
-console.log(searchTree.includes(5));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+console.log(searchTree.includes(20));
