@@ -2,6 +2,10 @@
 
 class Stack {
   constructor() {
+    this.clear();
+  }
+
+  clear() {
     this.top = null;
     this.height = 0;
   }
@@ -103,6 +107,10 @@ class SetOfStacks {
 
 class Queue {
   constructor() {
+    this.clear();
+  }
+
+  clear() {
     this.in = null;
     this.out = null;
   }
@@ -113,7 +121,7 @@ class Queue {
       next: null,
     };
 
-    if (this.in) {
+    if (this.in && this.out) {
       this.in.next = newNode;
     } else {
       this.out = newNode;
@@ -133,6 +141,42 @@ class Queue {
 
   peek() {
     return this.out ? this.out.value : undefined;
+  }
+}
+
+
+// implement a queue using two stacks
+class MyQueue {
+  constructor() {
+    this.clear();
+  }
+
+  clear() {
+    this.newest = new Stack();
+    this.oldest = new Stack();
+  }
+
+  enqueue(value) {
+    this.newest.push(value);
+  }
+
+  _accessOldest(action) { // action is 'pop' or 'peek'
+    if (this.oldest.height) {
+      return this.oldest[action]();
+    } else {
+      while (this.newest.height) {
+        this.oldest.push( this.newest.pop() );
+      }
+      return this.oldest[action]();
+    }
+  }
+
+  dequeue() {
+    return this._accessOldest('pop');
+  }
+
+  peek() {
+    return this._accessOldest('peek');
   }
 }
 
@@ -195,10 +239,24 @@ console.log();
 
 console.log('Queue:');
 let queue = new Queue();
-queue.enqueue(1);
-queue.enqueue(2);
-queue.enqueue(3);
+queue.enqueue(1); queue.enqueue(2); queue.enqueue(3);
 console.log(queue.dequeue());
 console.log(queue.dequeue());
 console.log(queue.dequeue());
 console.log(queue.dequeue());
+queue.enqueue(4); queue.enqueue(5);
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+
+console.log();
+
+console.log('MyQueue:');
+let myQueue = new MyQueue();
+myQueue.enqueue(1); myQueue.enqueue(2); myQueue.enqueue(3);
+console.log(myQueue.dequeue());
+console.log(myQueue.dequeue());
+console.log(myQueue.dequeue());
+console.log(myQueue.dequeue());
+myQueue.enqueue(4); myQueue.enqueue(5);
+console.log(myQueue.dequeue());
+console.log(myQueue.dequeue());
