@@ -3,6 +3,7 @@
 class Stack {
   constructor() {
     this.top = null;
+    this.height = 0;
   }
 
   push(value) {
@@ -10,6 +11,7 @@ class Stack {
       value: value,
       next: this.top,
     };
+    ++this.height;
   }
 
   pop() {
@@ -18,7 +20,12 @@ class Stack {
     }
     let value = this.top.value;
     this.top = this.top.next;
+    --this.height;
     return value;
+  }
+
+  peek() {
+    return this.top ? this.top.value : undefined;
   }
 }
 
@@ -35,12 +42,21 @@ class MinStack extends Stack {
       next: this.top,
       min: min,
     };
+    ++this.height;
   }
 
   min() {
     if (this.top) {
       return this.top.min;
     }
+  }
+}
+
+
+class SetOfStacks {
+  constructor(maxHeight) {
+    this.maxHeight = maxHeight;
+    this.stackSet = new Stack();
   }
 }
 
@@ -73,6 +89,10 @@ class Queue {
     let value = this.out.value;
     this.out = this.out.next;
     return value;
+  }
+
+  peek() {
+    return this.out ? this.out.value : undefined;
   }
 }
 
