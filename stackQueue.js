@@ -57,6 +57,46 @@ class SetOfStacks {
   constructor(maxHeight) {
     this.maxHeight = maxHeight;
     this.stackSet = new Stack();
+    this.size = 0;
+  }
+
+  push(value) {
+    ++this.size;
+    let topStack = this.stackSet.peek();
+    if (!topStack || topStack.height === this.maxHeight) {
+      let newTop = new Stack();
+      newTop.push(value);
+      this.stackSet.push(newTop);
+    } else {
+      topStack.push(value);
+    }
+  }
+
+  pop() {
+    let topStack = this.stackSet.peek();
+    if (!topStack) {
+      return undefined;
+    }
+    if (topStack.height === 0) {
+      this.stackSet.pop();
+      return this.pop();
+    } else {
+      --this.size;
+      return topStack.pop();
+    }
+  }
+
+  peek() {
+    let topStack = this.stackSet.peek();
+    if (!topStack) {
+      return undefined;
+    }
+    if (topStack.height === 0) {
+      this.stackSet.pop();
+      return this.peek();
+    } else {
+      return topStack.peek();
+    }
   }
 }
 
@@ -105,6 +145,7 @@ module.exports = {
 
 // TEST
 
+console.log('Regular stack:');
 let stack = new Stack();
 stack.push(1);
 stack.push(2);
@@ -116,6 +157,7 @@ console.log('pop:', stack.pop());
 
 console.log();
 
+console.log('MinStack');
 let minStack = new MinStack();
 minStack.push(3);
 minStack.push(4);
@@ -134,6 +176,24 @@ console.log('min:', minStack.min());
 
 console.log();
 
+console.log('Set of stacks:');
+let sos = new SetOfStacks(2);
+console.log('peek:', sos.peek());
+console.log('pushing 0, 1, 2, 3, 4');
+sos.push(0); sos.push(1); sos.push(2); sos.push(3); sos.push(4);
+console.log('peek:', sos.peek());
+console.log('size:', sos.size);
+console.log('pop:', sos.pop());
+console.log('pop:', sos.pop());
+console.log('size:', sos.size);
+console.log('pop:', sos.pop());
+console.log('pop:', sos.pop());
+console.log('size:', sos.size);
+console.log('peek:', sos.peek());
+
+console.log();
+
+console.log('Queue:');
 let queue = new Queue();
 queue.enqueue(1);
 queue.enqueue(2);
