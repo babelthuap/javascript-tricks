@@ -113,9 +113,12 @@ class Queue {
   clear() {
     this.in = null;
     this.out = null;
+    this.size = 0;
   }
 
   enqueue(value) {
+    ++this.size;
+
     let newNode = {
       value: value,
       next: null,
@@ -134,6 +137,7 @@ class Queue {
     if (!this.out) {
       return undefined;
     }
+    --this.size;
     let value = this.out.value;
     this.out = this.out.next;
     return value;
