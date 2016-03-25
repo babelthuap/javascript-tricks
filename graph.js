@@ -16,7 +16,9 @@ class Graph {
       throw new Error(`${label} is already a node`);
     }
     this.nodes[label] = new Set();
-    neighbors.forEach(neighbor => this.addNeighbor(label, neighbor));
+    if (neighbors) {
+      neighbors.forEach(neighbor => this.addNeighbor(label, neighbor));
+    }
   }
 
   _verifyExistenceOf(node) {
@@ -25,14 +27,49 @@ class Graph {
     }
   }
 
+  removeNode(node) {
+    this._verifyExistenceOf(node);
+    delete this.nodes[node];
+  }
+
   addNeighbor(node, neighbor) {
     this._verifyExistenceOf(node);
     this._verifyExistenceOf(neighbor);
     return this.nodes[node].add(neighbor);
   }
 
+  addNeighbors(node, neighbors) {
+    neighbors.forEach(neighbor => this.addNeighbor(node, neighbor));
+  }
+
   removeNeighbor(node, neighbor) {
     this._verifyExistenceOf(node);
     return this.nodes[node].delete(neighbor);
   }
+
+  getNodes() {
+    return Object.keys(this.nodes);
+  }
+
+  getNeighbors(node) {
+    this._verifyExistenceOf(node);
+    return [...this.nodes[node]];
+  }
+
+  print() {
+    for (let node in this.nodes) {
+      console.log(`${node}: ${this.getNeighbors(node).join(', ')}`);
+    }
+  }
 }
+
+// 1 → 2 ↘
+// ↓ ↘ ↑  5
+// 3 → 4 ↗
+let graph = new Graph([1, 2, 3, 4, 5]);
+graph.addNeighbors(1, [3,4,2]);
+graph.addNeighbors(2, [5]);
+graph.addNeighbors(3, [4]);
+graph.addNeighbors(4, [2,5]);
+graph.addNeighbors(5, [4]);
+graph.print();
