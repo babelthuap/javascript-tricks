@@ -88,17 +88,21 @@ class BinarySearchTree extends Tree {
   }
 
   // create a minimal-height binary search tree from an array of numbers
-  static createSearchTree(arr) {
+  static create(arr) {
+    arr.sort((a, b) => a - b);
+    return BinarySearchTree._create(arr);
+  }
+
+  static _create(arr) {
     if (arr.length === 0) {
       return EMPTY_TREE;
     }
     if (arr.length === 1) {
       return new BinarySearchTree(arr[0]);
     }
-    arr.sort((a, b) => a - b);
     let middle = Math.floor(arr.length / 2);
-    let leftTree = BinarySearchTree.createSearchTree(arr.slice(0, middle));
-    let rightTree = BinarySearchTree.createSearchTree(arr.slice(middle + 1));
+    let leftTree = BinarySearchTree._create(arr.slice(0, middle));
+    let rightTree = BinarySearchTree._create(arr.slice(middle + 1));
     let mainTree = new BinarySearchTree(arr[middle]);
     mainTree.left = leftTree;
     mainTree.right = rightTree;
@@ -131,5 +135,5 @@ console.log('height():', tree.height());
 console.log('isBalanced():', tree.isBalanced());
 
 console.log('\nCREATE SEARCH TREE:');
-let created = BinarySearchTree.createSearchTree([4,2,15,14,11,6,12,3,13,1,7,10,9,5,8]);
+let created = BinarySearchTree.create([4,2,15,14,11,6,12,3,13,1,7,10,9,5,8]);
 created.print();
